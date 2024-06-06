@@ -10,17 +10,23 @@ import requests
 from django.utils import timezone
 from django.db.models import Sum
 
+
+
+
+
 #-----------------------------------------------------------------------------#
 #-------------------- 2024/06/05 新增作業的CODE--------------------------------#
 #-----------新增HTML allprice.html,index.html,usedetails.html-----------------#
 #-----------------------------------------------------------------------------#
 
 def index(request):
-
-    # 在此接收加盟主的id  ,  先預設為2  , 之後應為從客戶前端登入後取得登入帳號的id
-    resultList = Machine.objects.filter(store=2).order_by("id")
-    store_name = Store.objects.filter(id=2).values("name")
+    # 加盟店id 先預設2 之後應從前端登入後取得加盟的帳號id
+    fakeID = 4
+    resultList = Machine.objects.filter(store=fakeID).order_by("id")
+    store_name = Store.objects.filter(id=fakeID).values("name")
     name = store_name[0]["name"]
+
+    status = True
     # (if not resultList) 檢查 resultList 是否為空
     if not resultList:
         status = False
@@ -60,6 +66,7 @@ def createItem(request):
 
 
 def allprice(request, id=None):
+        # data = Machine.objects.get(id=id)
         try:
             machine = MachineUseAdd.objects.filter(machine=id).values().order_by("created_at")
             total_price = machine.aggregate(total_price=Sum('price'))['total_price'] or 0
@@ -79,6 +86,7 @@ def allprice(request, id=None):
             return HttpResponse("您無此機台")
         
 def usedetails(request, id=None):
+        # data = Machine.objects.get(id=id)
         try:
             machine = MachineUseAdd.objects.filter(machine=id).values().order_by("created_at")
             total_price = machine.aggregate(total_price=Sum('price'))['total_price'] or 0
