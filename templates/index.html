@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}
+<title>機台管理系統</title>
+<style>
+    h1,h2,h3{
+        text-align: center;
+    }
+    table, th, td{
+        border: 1px solid;
+        border-collapse: collapse;
+    }
+    table{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .head_content{
+        margin-bottom: 24px;
+    }
+    .search{
+        text-align: center;
+    }
+</style>
+{% endblock title %}
+
+{% block content %}
+<div class="head_content">
+    <h1 class="title">加盟店 : {{ name }}</h1>
+    <h1 class="title">機台管理系統</h1>
+    <h2>目前的機台數量:{{ data_count }}
+    {% comment %} <div class="search">
+        <form action="/index/" method="get">
+            <label for="site_search">搜尋關鍵字</label>
+            <input type="search" id="site_search" name="site_search">
+            <button type="submit">搜尋</button>
+        </form>
+    </div> {% endcomment %}
+</div>
+{% if status %}
+    <table>
+        <tr><th>編號</th><th>型號</th><th>規格</th><th>機器說明</th><th>機器圖片</th><th>機器狀態</th><th>安裝時間</th><th>使用量</th></tr>
+        {% for data in resultList %}
+            <tr>
+                <td>{{ data.id }}</td>
+                <td>{{ data.model }}</td>
+                <td>{{ data.specifications }}</td>
+                <td>{{ data.description }}</td>
+                <td>{{ data.image_url }}</td>
+                <td>{{ data.status }}</td>
+                <td>{{ data.created_at }}</td>
+                <td>
+                    <a href="/usedetails/{{ data.id }}/">使用細項</a>
+                    <a href="/allprice/{{ data.id }}/">機台總交易額</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <h1>無資料</h1>
+{% endif %}
+{% endblock content %}
+
+
